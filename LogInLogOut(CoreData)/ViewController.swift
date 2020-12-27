@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController {
     
@@ -19,7 +20,26 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
+        
+        request.returnsObjectsAsFaults = false
+        do {
+            let results = try context.fetch(request)
+            for result in results as! [NSManagedObject] {
+                if let username = result.value(forKey: "name") as? String {
+                    logInButton.setTitle("Update username", for: [])
+                    logOutButton.alpha = 1
+                    label.alpha = 1
+                    label.text = "Hi there " + username + "!"
+                }
+            }
+            
+        } catch {
+            print("Request failed")
+            
+        }
     }
 
 
