@@ -8,6 +8,14 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    
+    
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var logInButton: UIButton!
+    @IBOutlet weak var logOutButton: UIButton!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,5 +23,24 @@ class ViewController: UIViewController {
     }
 
 
+    
+    
+    @IBAction func logIn(_ sender: UIButton) {
+    }
+    
+    
+    
+    @IBAction func logOut(_ sender: UIButton) {
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
