@@ -17,13 +17,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var logInButton: UIButton!
     @IBOutlet weak var logOutButton: UIButton!
     
+    
+    func accesToVieContext() -> NSManagedObjectContext{
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        return context
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
+        let context = accesToVieContext()
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
-        
         request.returnsObjectsAsFaults = false
         do {
             let results = try context.fetch(request)
@@ -42,8 +46,7 @@ class ViewController: UIViewController {
 
 
     @IBAction func logIn(_ sender: UIButton) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
+        let context = accesToVieContext()
         if isLoggedIn {
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
             do {
@@ -80,8 +83,7 @@ class ViewController: UIViewController {
     
     
     @IBAction func logOut(_ sender: UIButton) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
+        let context = accesToVieContext()
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
         do {
             let results = try context.fetch(request)
