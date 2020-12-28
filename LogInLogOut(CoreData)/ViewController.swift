@@ -11,7 +11,7 @@ import CoreData
 class ViewController: UIViewController {
     
     
-    
+    var isLoggedIn = false
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var logInButton: UIButton!
@@ -35,10 +35,8 @@ class ViewController: UIViewController {
                     label.text = "Hi there " + username + "!"
                 }
             }
-            
         } catch {
             print("Request failed")
-            
         }
     }
 
@@ -46,6 +44,40 @@ class ViewController: UIViewController {
     
     
     @IBAction func logIn(_ sender: UIButton) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        if isLoggedIn {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
+            do {
+                let results = try context.fetch(request)
+                if results.count > 0 {
+                    for result in results as! [NSManagedObject] {
+                        result.setValue(textField.text, forKey: "name")
+                        do {
+                            try context.save()
+                        } catch {
+                            print("Update username save failed")
+                        }
+                    }
+                 label.text = "Hi there " + textField.text! + "!"
+                }
+            } catch {
+            print("Update username failed")
+            }
+        } else {
+            let newValue = NSEntityDescription.insertNewObject(forEntityName: "Users", into: context)
+            newValue.setValue(textField.text, forKey: "name")
+            do {
+                try context.save()
+                logInButton.setTitle("Update username", for: [])
+                label.alpha = 1
+                label.text = "Hi there " + textField.text! + "!"
+                isLoggedIn = true
+                logOutButton.alpha = 1
+            } catch {
+                print("Failed to save")
+            }
+        }
     }
     
     
